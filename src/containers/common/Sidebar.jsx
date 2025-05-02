@@ -23,19 +23,19 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-white h-full w-64 pl-4 pr-6 fixed top-0 left-0 overflow-y-auto shadow-special-navbar">
+    <div className="bg-white h-full w-56 pl-4 pr-6 fixed top-0 left-0 overflow-y-auto shadow-special-navbar">
       <div className="h-full pb-6 flex flex-col justify-between">
         <div className="">
-          <div className="w-full px-10 py-6">
+          <div className="w-full px-2 h-40 flex items-center ">
             <img src={Logo} alt="logo" className="w-full h-auto" />
           </div>
-          <div className="flex flex-col gap-3 items-center mt-4 text-[#8D8989]">
+          <div className="flex flex-col gap-3 items-center text-sm  text-[#8D8989]">
             {/* Dashboard */}
             <Link
               to="/"
-              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-500 ${
+              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all ease-in-out duration-500 ${
                 ["/"].includes(location.pathname)
-                  ? "bg-gray-800 text-white"
+                  ? "bg-primary text-white"
                   : "text-[#8D8989]"
               }`}
             >
@@ -46,9 +46,9 @@ const Sidebar = () => {
             {/* Users */}
             <Link
               to="/users"
-              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-500 ${
+              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all ease-in-out duration-500 ${
                 ["/users"].includes(location.pathname)
-                  ? "bg-gray-800 text-white"
+                  ? "bg-primary text-white"
                   : "text-[#8D8989]"
               }`}
             >
@@ -59,9 +59,9 @@ const Sidebar = () => {
             {/* Equipements */}
             <Link
               to="/equipements"
-              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-500 ${
+              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all ease-in-out duration-500 ${
                 ["/equipements"].includes(location.pathname)
-                  ? "bg-gray-800 text-white"
+                  ? "bg-primary text-white"
                   : "text-[#8D8989]"
               }`}
             >
@@ -73,9 +73,9 @@ const Sidebar = () => {
             {/* Projects */}
             <Link
               to="/projects"
-              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-500 ${
+              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all ease-in-out duration-500 ${
                 ["/projects"].includes(location.pathname)
-                  ? "bg-gray-800 text-white"
+                  ? "bg-primary text-white"
                   : "text-[#8D8989]"
               }`}
             >
@@ -87,9 +87,9 @@ const Sidebar = () => {
             {/* Interventions */}
             <Link
               to="/interventions"
-              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-gray-800 hover:text-white transition-all ease-in-out duration-500 ${
+              className={`w-full flex flex-row rounded-md gap-3 px-4 py-2 cursor-pointer hover:bg-primary hover:text-white transition-all ease-in-out duration-500 ${
                 ["/interventions"].includes(location.pathname)
-                  ? "bg-gray-800 text-white"
+                  ? "bg-primary text-white"
                   : "text-[#8D8989]"
               }`}
             >

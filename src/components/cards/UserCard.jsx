@@ -1,43 +1,124 @@
 import React, { useState } from "react";
 import swal from "sweetalert";
 import { path } from "../../utils/Variables";
-import { Lock } from "lucide-react";
-import { CiLock, CiUnlock } from "react-icons/ci";
+import {
+  CircleAlert,
+  CircleAlertIcon,
+  CircleCheck,
+  CircleCheckBig,
+  Eye,
+  Lock,
+  LockKeyhole,
+  LockKeyholeOpen,
+  Trash2,
+  UserPen,
+} from "lucide-react";
+import { CiCrop, CiLock, CiText, CiUnlock } from "react-icons/ci";
+import UserCardDetail from "./UserCardDetail";
+import UserModal from "../modals/UserModal";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const UserCard = ({ data, fetchData }) => {
-  const { id, post, firstName, lastName, email, picture, active, role } = data;
+  const {
+    id,
+    firstName,
+    lastName,
+    code,
+    email,
+    post,
+    project,
+    role,
+    picture,
+    active,
+  } = data;
 
   const [modalOpen, setModalOpen] = useState(false);
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
+  const [modalOpenDetails, setModalOpenDetails] = useState(false);
+
+  const toggleModal = () => setModalOpen(!modalOpen);
+  const toggleModalDetails = () => setModalOpenDetails(!modalOpenDetails);
 
   const deleteUser = async () => {
     const willDelete = await swal({
       title: "Are you sure?",
-      text: "Are you sure that you want to delete this Admin?",
+      text: `Are you sure that you want to delete ${firstName} ${lastName}?`,
       icon: "warning",
       dangerMode: true,
     });
 
     if (willDelete) {
-      //   const result = await axios.delete(`${path}user/${_id}`);
-      //   if (result.data.success) {
-      //     swal("Success!", result.data.message, "success");
-      //     fetchData();
-      //   } else {
-      //     return swal("Error!", result.adta.message, "error");
-      //   }
+      console.log(id);
+
+      await axios
+      .delete(`${path}user/one/${data._id}`)
+      .then((res) => {
+        if (res.data?.success) {
+          Swal.fire({
+            title: "Deleted!",
+            text: res.data?.message,
+            icon: "success",
+          });
+          fetchData();
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "somethins with server",
+            icon: "error",
+          });
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "Error!",
+          text: error.message,
+          icon: "error",
+        });
+        // console.log(error);
+      });
+        fetchData();
     }
   };
+
+  
+  const ToggleEctiveStatus = async () => {
+
+    await axios
+      .get(`${path}user/activatestatus/${data._id}`)
+      .then((res) => {
+         if (res.data?.success) {
+              Swal.fire({
+                title: "Satus Updated!",
+                text: res.data?.message,
+                icon: "success",
+              });
+              fetchData();
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "somethins with server",
+                icon: "error",
+              });
+            }
+      })
+      .catch((error) => console.log(error));
+  }
+
 
   return (
     <>
       <div className=" relative w-full flex flex-col gap-4 bg-white p-5 shadow border border-gray-100 rounded-md ">
-        {/* <div className="absolute -top-1 -right-1  rounded-full w-7 h-7 bg-red-100  flex items-center justify-center">
-            <CiLock className="text-red-900"  size={18} />
-            <CiUnlock  size={20} />
-        </div> */}
+        <div className="absolute -top-1 -right-1  rounded-full w-8 h-8 bg-gray-f4  flex items-center justify-center">
+          {active ? (
+            <CircleCheckBig
+              color="green"
+              size={24}
+              className="bg-transparent"
+            />
+          ) : (
+            <CircleAlertIcon color="red" size={24} className="bg-transparent" />
+          )}
+        </div>
         <div className="$ flex flex-row items-center gap-2">
           {picture ? (
             <img
@@ -56,33 +137,61 @@ const UserCard = ({ data, fetchData }) => {
             <h2 className="font-medium text-gray-800 leading-0">
               {firstName} {lastName}
             </h2>
-            <span className="font-semibold text-xs text-gray-500  ">{role}</span>
+            <span className="font-semibold text-xs text-gray-500  ">
+              {role}
+            </span>
           </div>
         </div>
         <div className="text-sm">
+          <div className="flex flex-row items-center justify-between">
+            <h2 className="text-gray-800">Code:</h2>
+            <span className="text-gray-500">{code}</span>
+          </div>
           <div className="flex flex-row items-center justify-between">
             <h2 className="text-gray-800">Email:</h2>
             <span className="text-gray-500">{email}</span>
           </div>
           <div className="flex flex-row items-center justify-between">
-            <h2 className="text-gray-800">Telephone:</h2>
+            <h2 className="text-gray-800">Post:</h2>
             <span className="text-gray-500">{post}</span>
           </div>
+          <div className="flex flex-row items-center justify-between">
+            <h2 className="text-gray-800">Project:</h2>
+            <span className="text-gray-500">{project}</span>
+          </div>
         </div>
-          <div className="border-b border-gray-300"></div>
-        <div className="grid grid-cols-2 gap-4 w-full text-gray-700 items-center text-sm ">
+        <div className="border-b border-gray-300"></div>
+        {/* <div className="w-full flex flex-row gap-4 "> */}
+        <div className="w-full  grid grid-cols-4 gap-4 text-gray-700 items-center text-sm ">
           <button
             onClick={toggleModal}
-            className="w-full py-1 rounded-md  border bg-blue-50 hover:bg-cyan-800 text-cyan-800 hover:text-white transition-all ease-in-out duration-500 "
+            className="h-8 rounded-md  border border-cyan-800 bg-blue-50 hover:bg-cyan-800 text-cyan-800 hover:text-white transition-all ease-in-out duration-500 cursor-pointer flex items-center justify-center"
           >
-            Modifier
+            <UserPen size={22} strokeWidth={1.5} />
           </button>
 
           <button
             onClick={deleteUser}
-            className="w-full py-1 rounded-md  border bg-red-50 text-red-800 hover:text-white hover:bg-rose-800 transition-all ease-in-out duration-500"
+            className="h-8 rounded-md  border border-red-800 bg-red-50 text-red-800 hover:text-white hover:bg-rose-800 transition-all ease-in-out duration-500 cursor-pointer flex items-center justify-center"
           >
-            Supprimer
+            <Trash2 size={22} strokeWidth={1.25} />
+          </button>
+          {/* </div> */}
+          <button
+            onClick={ToggleEctiveStatus}
+            className=" h-8 rounded-md border bg-gray-50 text-gray-700 hover:text-white hover:bg-gray-700 transition-all ease-in-out duration-500 px-2 cursor-pointer flex items-center justify-center"
+          >
+            {active ? (
+              <LockKeyhole size={22} strokeWidth={1.5} />
+            ) : (
+              <LockKeyholeOpen size={22} strokeWidth={1.5} />
+            )}
+          </button>
+          <button
+            onClick={toggleModalDetails}
+            className=" h-8 rounded-md  border bg-purple-50 text-purple-800 hover:text-white hover:bg-purple-800 transition-all ease-in-out duration-500 px-2 cursor-pointer flex items-center justify-center"
+          >
+            <Eye size={24} strokeWidth={1.25} />
           </button>
         </div>
       </div>
@@ -91,7 +200,21 @@ const UserCard = ({ data, fetchData }) => {
         toggleModal={toggleModal}
         fetchData={fetchData}
         data={data}
-      /> */}
+        /> */}
+      <UserModal
+        modalOpen={modalOpen}
+        toggleModal={toggleModal}
+        fetchData={fetchData}
+        data={data}
+      />
+      <UserCardDetail
+        modalOpen={modalOpenDetails}
+        toggleModalD={toggleModalDetails}
+        data={data}
+        deleteUser={deleteUser}
+        toggleModal={toggleModal}
+        ToggleEctiveStatus={ToggleEctiveStatus}
+      />
     </>
   );
 };

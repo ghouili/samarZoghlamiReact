@@ -71,7 +71,7 @@ const Navbar = () => {
   // }, [location.pathname]);
 
   return (
-    <div className="h-14 fixed top-4 right-0 left-64 z-10 px-6">
+    <div className="h-14 fixed top-4 right-0 left-56 z-50 px-6">
       <div className="bg-white h-full rounded-md shadow-md flex flex-row items-center justify-between pl-6 pr-4 text-black border border-gray-100 ">
         <div className=" flex flex-row items-center justify-between w-2/3 ">
           <div className="flex flex-row gap-2 items-center transition-transform duration-500 ease-in-out transform divide-x-2 divide-blue-[#919191]">

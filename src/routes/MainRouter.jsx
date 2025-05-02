@@ -23,7 +23,7 @@ const MainRouter = () => {
   return (
     <div>
       <Navbar />
-      <div className={` w-full pl-64 pt-16  ${isScrolled ? "" : ""}`}>
+      <div className={` w-full pl-56 pt-16  ${isScrolled ? "" : ""}`}>
         <Sidebar />
 
         <div className="p-6">

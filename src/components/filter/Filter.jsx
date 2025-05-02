@@ -1,26 +1,40 @@
+import { FileUp, UserPlus } from "lucide-react";
 import React from "react";
 
-const Filter = () => {
+const Filter = ({ toggleModal, toggleUploadFileModal }) => {
   return (
     <div className="bg-white shadow border border-gray-100 rounded-md flex flex-row items-center justify-between py-2 px-6">
-      <div className=" flex fle-row items-center gap-10">
+      <div className=" flex fle-row items-center gap-4">
+        <button
+          onClick={toggleUploadFileModal}
+          className="text-xs flex items-center gap-1 font-semibold text-primary border border-primary hover:bg-primary hover:text-white rounded-md px-2 py-1.5 transition ease-in-out duration-300 cursor-pointer"
+        >
+          <FileUp strokeWidth={1.75} size={16} /> <p>Excel File</p>
+        </button>
+        <button
+          onClick={toggleModal}
+          className="text-xs flex items-center gap-1 font-semibold text-primary border border-primary hover:bg-primary hover:text-white rounded-md px-2 py-1.5 transition ease-in-out duration-300 cursor-pointer"
+        >
+          <UserPlus strokeWidth={1.75} size={16} />
+          <p>Nouveau Employee</p>
+        </button>
         <div className="relative">
           <input
             type="search"
             id="floating_outlined"
-            className="block px-2.5 py-1.5 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            className="block px-2.5 py-1 w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
           />
           <label
-            for="floating_outlined"
+            htmlFor="floating_outlined"
             className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
           >
             Search All Emplyees
           </label>
         </div>
-        <button className="flex items-center justify-center px-3 h-8 leading-tight text-blue-600 bg-blue-50 border rounded border-gray-300 hover:bg-blue-100 hover:text-blue-700">
+        {/* <button className="flex items-center justify-center px-3 h-8 leading-tight text-blue-600 bg-blue-50 border rounded border-gray-300 hover:bg-blue-100 hover:text-blue-700">
           All
-        </button>
+        </button> */}
       </div>
       <div className="">
         <nav aria-label="Page navigation example">

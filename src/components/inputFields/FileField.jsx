@@ -1,5 +1,6 @@
 import { FiUpload } from "react-icons/fi";
 import { BiEdit } from "react-icons/bi";
+import { path } from "../../utils/Variables";
 
 const FileField = ({ previewUrl, filePickerRef, pickedHandler, formValues }) => {
   return (
@@ -27,13 +28,15 @@ const FileField = ({ previewUrl, filePickerRef, pickedHandler, formValues }) => 
             />
           </label>
         </div>
-      ) : formValues.avatar ? (
+      ) : formValues.picture ? (
         <div className=" relative w-40 h-hidden rounded-md shadow-inner mx-auto ">
           <img
-            src={`http://localhost:5000/src/uploads/images/${formValues.avatar}`}
+            src={`${path}uploads/images/${formValues.picture}`}
             alt="product_pic"
             className="h-full w-full object-cover object-center rounded-md"
           />
+
+          
           <label
             htmlFor="pictureID"
             className="absolute p-1 rounded-full bg-purple-50 border border-white -bottom-3 -left-3 text-gray-700 cursor-pointer"
