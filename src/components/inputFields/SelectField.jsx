@@ -8,7 +8,7 @@ const SelectField = ({ label, name, value, onChange, options, disabled }) => {
       >
         {label}
       </label>
-      <select
+      <select 
         disabled={disabled}
         name={name}
         id={name}

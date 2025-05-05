@@ -1,43 +1,42 @@
-import { Search } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { Filter, UploadFileModel, UserCard, UserModal } from "../../components";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import { path } from "../../utils/Variables";
+import {
+  EquipmentCard,
+  EquipmentModal,
+  Filter,
+  UploadFileModel,
+} from "../../components";
 
-const Users = () => {
+const Equipments = () => {
   const [data, setData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [UploadFilemodalOpen, setUploadFileModalOpen] = useState(false);
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const limit = 10; // Define limit for pagination
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
-  const toggleUploadFileModal = () => {
-    setUploadFileModalOpen(!UploadFilemodalOpen);
-  };
 
   const fetchData = async () => {
-    await axios
-      .get(
-        `${path}user?page=${currentPage}&limit=${limit}&search=${searchTerm}`
-      )
-      .then((res) => {
-        setData(res.data.data);
-        setTotalPages(res.data.pages);
-        setCurrentPage(Number(res.data.currentPage));
-      })
-      .catch((error) => console.log(error));
-    console.log("fetch users");
+    try {
+      const res = await axios.get(
+        `${path}equipment?page=${currentPage}&limit=${limit}&search=${searchTerm}`,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      );
+      setData(res.data.data);
+      setTotalPages(res.data.pages);
+      setCurrentPage(Number(res.data.currentPage));
+    } catch (error) {
+      console.error("Error fetching equipments:", error);
+      Swal.fire("Error!", "Failed to fetch equipments", "error");
+    }
   };
+
   useEffect(() => {
     fetchData();
-
-    return () => {
-      fetchData();
-    };
   }, [currentPage, searchTerm]);
 
   const handlePageChange = (page) => {
@@ -53,8 +52,8 @@ const Users = () => {
     <>
       <div className="flex flex-col gap-4 pb-9 mb-96">
         <Filter
-          toggleModal={toggleModal}
-          toggleUploadFileModal={toggleUploadFileModal}
+          toggleModal={() => setModalOpen(!modalOpen)}
+          toggleUploadFileModal={() => setUploadModalOpen(!uploadModalOpen)}
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
@@ -62,23 +61,23 @@ const Users = () => {
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {data.map((item, idx) => (
-            <UserCard key={idx} data={item} fetchData={fetchData} />
+            <EquipmentCard key={idx} data={item} fetchData={fetchData} />
           ))}
         </div>
       </div>
-      <UserModal
+      <EquipmentModal
         modalOpen={modalOpen}
-        toggleModal={toggleModal}
+        toggleModal={() => setModalOpen(!modalOpen)}
         fetchData={fetchData}
         data={null}
       />
       <UploadFileModel
-        modalOpen={UploadFilemodalOpen}
-        toggleModal={toggleUploadFileModal}
+        modalOpen={uploadModalOpen}
+        toggleModal={() => setUploadModalOpen(!uploadModalOpen)}
         fetchData={fetchData}
       />
     </>
   );
 };
 
-export default Users;
+export default Equipments;

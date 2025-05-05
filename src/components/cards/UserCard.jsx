@@ -2,19 +2,16 @@ import React, { useState } from "react";
 import swal from "sweetalert";
 import { path } from "../../utils/Variables";
 import {
-  CircleAlert,
   CircleAlertIcon,
-  CircleCheck,
   CircleCheckBig,
   Eye,
-  Lock,
   LockKeyhole,
   LockKeyholeOpen,
   Trash2,
   UserPen,
 } from "lucide-react";
 import { CiCrop, CiLock, CiText, CiUnlock } from "react-icons/ci";
-import UserCardDetail from "./UserCardDetail";
+import UserCardDetail from "../modals/UserCardDetail";
 import UserModal from "../modals/UserModal";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -119,7 +116,7 @@ const UserCard = ({ data, fetchData }) => {
             <CircleAlertIcon color="red" size={24} className="bg-transparent" />
           )}
         </div>
-        <div className="$ flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2">
           {picture ? (
             <img
               className="w-16 h-16 rounded-lg"
@@ -144,19 +141,19 @@ const UserCard = ({ data, fetchData }) => {
         </div>
         <div className="text-sm">
           <div className="flex flex-row items-center justify-between">
-            <h2 className="text-gray-800">Code:</h2>
+            <h2 className="text-gray-800 font-semibold">Code:</h2>
             <span className="text-gray-500">{code}</span>
           </div>
           <div className="flex flex-row items-center justify-between">
-            <h2 className="text-gray-800">Email:</h2>
+            <h2 className="text-gray-800 font-semibold">Email:</h2>
             <span className="text-gray-500">{email}</span>
           </div>
           <div className="flex flex-row items-center justify-between">
-            <h2 className="text-gray-800">Post:</h2>
+            <h2 className="text-gray-800 font-semibold">Post:</h2>
             <span className="text-gray-500">{post}</span>
           </div>
           <div className="flex flex-row items-center justify-between">
-            <h2 className="text-gray-800">Project:</h2>
+            <h2 className="text-gray-800 font-semibold">Project:</h2>
             <span className="text-gray-500">{project}</span>
           </div>
         </div>

@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Dashboard, Navbar, Sidebar, Users } from "../containers";
-import { Route, Routes } from "react-router";
+import {
+  Dashboard,
+  Navbar,
+  Sidebar,
+  Users,
+  Projects,
+  Equipments,
+  Intervention,
+  Auth,
+} from "../containers";
+import { Route, Routes, useLocation } from "react-router";
 
 const MainRouter = () => {
+  const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -22,14 +32,22 @@ const MainRouter = () => {
   }, []);
   return (
     <div>
-      <Navbar />
-      <div className={` w-full pl-56 pt-16  ${isScrolled ? "" : ""}`}>
-        <Sidebar />
+      {location.pathname === "/login" ? null : <Navbar />}
+      <div
+        className={` w-full ${
+          location.pathname === "/login" ? "" : "pl-56 pt-16"
+        }  ${isScrolled ? "" : ""}`}
+      >
+        {location.pathname === "/login" ? null : <Sidebar />}
 
-        <div className="p-6">
+        <div className={`${location.pathname === "/login" ? "" : "p-6"}`}>
           <Routes>
             <Route index element={<Dashboard />} />
+            <Route path="login" element={<Auth />} />
             <Route path="users" element={<Users />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="equipements" element={<Equipments />} />
+            <Route path="interventions" element={<Intervention />} />
           </Routes>
         </div>
       </div>

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { path } from "../../utils/Variables";
 import { Upload } from "lucide-react";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router";
 
 const UploadFileModel = ({ modalOpen, toggleModal, fetchData }) => {
+  const location = useLocation();
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
 
@@ -52,11 +54,21 @@ const UploadFileModel = ({ modalOpen, toggleModal, fetchData }) => {
       return;
     }
 
+    let pathUpload = `${path}user/import`;
+
+    if (location.pathname === "/projects") {
+      pathUpload = `${path}project/import`;
+    } else if (location.pathname === "/equipements") {
+      pathUpload = `${path}equipment/import`;
+    } else {
+      pathUpload = `${path}user/import`;
+    }
+
     const formData = new FormData();
     formData.append("data", file);
 
     try {
-      const response = await fetch(`${path}user/import`, {
+      const response = await fetch(pathUpload, {
         method: "POST",
         body: formData,
       });
@@ -65,7 +77,7 @@ const UploadFileModel = ({ modalOpen, toggleModal, fetchData }) => {
 
       if (response.ok) {
         if (result.success) {
-          let message = `${result.message} (${result.data.imported} users imported)`;
+          let message = `${result.message} (${result.data.imported} data imported)`;
           if (result.data.errors && result.data.errors.length > 0) {
             message += "\n\nErrors: \n" + result.data.errors.join("\n");
           }
@@ -95,7 +107,7 @@ const UploadFileModel = ({ modalOpen, toggleModal, fetchData }) => {
         } else {
           Swal.fire({
             title: "Error!",
-            text: result.message || "Failed to import employees.",
+            text: result.message || "Failed to import data.",
             icon: "error",
           });
         }

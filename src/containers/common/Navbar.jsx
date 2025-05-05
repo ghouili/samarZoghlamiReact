@@ -145,7 +145,8 @@ const Navbar = () => {
             {/* <span className="border rounded-full">bull</span> */}
             <img
               className="w-8 h-8 rounded-full"
-              src="https://i.pinimg.com/564x/3a/f1/c7/3af1c73dd7fe817a9e02a94562662e78.jpg"
+              src="http://localhost:4000/uploads/images/avatar.png"
+              // src="https://i.pinimg.com/564x/3a/f1/c7/3af1c73dd7fe817a9e02a94562662e78.jpg"
               alt="Rounded avatar"
             />
             <div className="flex flex-col">
