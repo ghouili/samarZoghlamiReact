@@ -9,7 +9,7 @@ const ProjectDetail = ({
   toggleModal,
   deleteProject,
 }) => {
-  const { code, cmn, refTSK, qte, pin, sap1, sap2, refS } = data;
+  const { code, cmn, refTSK, qte, pin, sap1, sap2, refS, status } = data;
 
   const updateProject = () => {
     toggleModal();
@@ -80,6 +80,11 @@ const ProjectDetail = ({
                   <div className="flex flex-row items-center justify-between">
                     <h2 className="text-gray-800">Ref S:</h2>
                     <span className="text-gray-500">{refS}</span>
+                  </div>
+                  <div className="w-11/12 border-b border-gray-300 self-center mx-auto my-1" />
+                  <div className="flex flex-row items-center justify-between">
+                    <h2 className="text-gray-800">Status:</h2>
+                    <span className="text-gray-500">{status ? status : "-------"}</span>
                   </div>
                 </div>
                 <div className="w-2/3 grid grid-cols-2 gap-4 text-gray-700 items-center text-sm">

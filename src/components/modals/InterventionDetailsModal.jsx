@@ -9,7 +9,7 @@ const InterventionDetailsModal = ({
   toggleModalUpdate,
   deleteIntervention,
 }) => {
-  const { user, project, description } = data || {};
+  const { user, project, description, type, status } = data || {};
 
   const updateIntervention = () => {
     toggleModalUpdate();
@@ -65,6 +65,20 @@ const InterventionDetailsModal = ({
                     <h2 className="text-gray-800">Project:</h2>
                     <span className="text-gray-500">
                       {project?.code || "-------"}
+                    </span>
+                  </div>
+                  <div className="w-11/12 border-b border-gray-300 self-center mx-auto my-1" />
+                  <div className="flex flex-row items-center justify-between">
+                    <h2 className="text-gray-800">Type:</h2>
+                    <span className="text-gray-500">
+                      {type || "-------"}
+                    </span>
+                  </div>
+                  <div className="w-11/12 border-b border-gray-300 self-center mx-auto my-1" />
+                  <div className="flex flex-row items-center justify-between">
+                    <h2 className="text-gray-800">Status:</h2>
+                    <span className="text-gray-500">
+                      {status || "-------"}
                     </span>
                   </div>
                   <div className="w-11/12 border-b border-gray-300 self-center mx-auto my-1" />

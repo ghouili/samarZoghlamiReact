@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 
 import { path } from "../../utils/Variables";
 import InputField from "../inputFields/InputField";
+import SelectField from "../inputFields/SelectField";
 
 const ProjectModal = ({ modalOpen, toggleModal, fetchData, data }) => {
   const [formValues, setFormValues] = useState({
@@ -16,8 +17,15 @@ const ProjectModal = ({ modalOpen, toggleModal, fetchData, data }) => {
     sap1: "",
     sap2: "",
     refS: "",
+    status: "planned",
   });
 
+  let statusOptions = [
+    { label: "Planned", value: "planned" },
+    { label: "On going", value: "ongoing" },
+    { label: "Completed", value: "completed" },
+    { label: "On Hold", value: "on-hold" },
+  ];
   // Update form values when data prop changes
   useEffect(() => {
     if (data) {
@@ -30,6 +38,7 @@ const ProjectModal = ({ modalOpen, toggleModal, fetchData, data }) => {
         sap1: data.sap1 || "",
         sap2: data.sap2 || "",
         refS: data.refS || "",
+        status: data.planned || "planned",
       });
     } else {
       setFormValues({
@@ -41,6 +50,7 @@ const ProjectModal = ({ modalOpen, toggleModal, fetchData, data }) => {
         sap1: "",
         sap2: "",
         refS: "",
+        status: "planned",
       });
     }
   }, [data]);
@@ -88,14 +98,14 @@ const ProjectModal = ({ modalOpen, toggleModal, fetchData, data }) => {
               {data ? "Edit Project" : "Add New Project"}
             </h2>
             <div className="grid grid-cols-2 gap-4">
-              {/* <SelectField
-                label="Code"
-                type="text"
-                name="code"
-                value={formValues.code}
+              <SelectField
+                label="Status"
+                name="status"
+                value={formValues.status}
+                options={statusOptions}
                 onChange={handleChange}
-                placeholder="Enter project code"
-              /> */}
+                disabled={false}
+              />
               <InputField
                 label="Code"
                 type="text"

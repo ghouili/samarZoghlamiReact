@@ -11,10 +11,24 @@ const InterventionModal = ({ data, modalOpen, fetchData, toggleModal }) => {
     userId: "",
     projectId: "",
     description: "",
+    type: "",
+    status: "",
   });
   const [users, setUsers] = useState([]);
   const [projects, setProjects] = useState([]);
+  let statusOptions = [
+    { label: "Pending", value: "pending" },
+    { label: "In Progress", value: "in-progress" },
+    { label: "Completed", value: "completed" },
+  ];
 
+  let typeOptions = [
+    { label: "Repair", value: "repair" },
+    { label: "Inspection", value: "inspection" },
+    { label: "Setup", value: "setup" },
+    { label: "Test", value: "test" },
+    { label: "Other", value: "other" },
+  ];
   // Fetch users and projects from API
   useEffect(() => {
     const fetchUsers = async () => {
@@ -66,6 +80,8 @@ const InterventionModal = ({ data, modalOpen, fetchData, toggleModal }) => {
         userId: "",
         projectId: "",
         description: "",
+        type: "",
+        status: "",
       });
     }
   }, [data]);
@@ -127,6 +143,22 @@ const InterventionModal = ({ data, modalOpen, fetchData, toggleModal }) => {
                 value={formValues.projectId}
                 onChange={handleChange}
                 options={projects}
+                disabled={false}
+              />
+              <SelectField
+                label="Type"
+                name="type"
+                value={formValues.type}
+                onChange={handleChange}
+                options={typeOptions}
+                disabled={false}
+              />
+              <SelectField
+                label="Status"
+                name="status"
+                value={formValues.status}
+                onChange={handleChange}
+                options={statusOptions}
                 disabled={false}
               />
               <div className="col-span-2">
