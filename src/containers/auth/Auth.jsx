@@ -1,6 +1,45 @@
 // import React from "react";
+import axios from "axios";
 import Logo from "../../assets/logo_sebntn.png";
+import { path } from "../../utils/Variables";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../contextHook/AuthContext";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 const Auth = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${path}user/login`, {
+        email,
+        password,
+      });
+      if (response.data?.success === true) {
+        console.log(response.data);
+
+        const { token } = response.data.data;
+        console.log(token);
+        login(token);
+        navigate("/");
+
+        Swal.fire("Success!", response.data.message, "success");
+      } else {
+        return Swal.fire("Error!", response.data.message, "error");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+      return Swal.fire(
+        "Error!",
+        "Something went wrong. Please try again later.",
+        "error"
+      );
+    }
+  };
   return (
     <div className="flex h-screen">
       {/* Left Pane */}
@@ -235,14 +274,14 @@ const Auth = () => {
       </div>
       {/* Right Pane */}
       <div className="relative w-full bg-gray-100 lg:w-1/2 flex items-center justify-center">
-        <div className=" max-w-md w-full p-6">
+        <div className="max-w-md w-full p-6">
           <div className="absolute top-0 left-0 w-full flex flex-row justify-center pt-20">
-            <img src={Logo} className=" w-56 " alt="" />
+            <img src={Logo} className="w-56" alt="Logo" />
           </div>
           <h1 className="text-4xl font-semibold mb-6 text-primary text-center">
             Login
           </h1>
-          <form action="#" method="POST" className="space-y-4">
+          <div className="space-y-4">
             <div>
               <label
                 htmlFor="email"
@@ -254,6 +293,8 @@ const Auth = () => {
                 type="email"
                 id="email"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
             </div>
@@ -268,18 +309,20 @@ const Auth = () => {
                 type="password"
                 id="password"
                 name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300"
               />
             </div>
             <div>
               <button
-                type="submit"
-                className="w-full border-2 border-primary bg-primary text-white p-2 rounded-md hover:bg-transparent hover:text-primary  focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition ease-in-out duration-300 cursor-pointer"
+                onClick={handleSubmit}
+                className="w-full border-2 border-primary bg-primary text-white p-2 rounded-md hover:bg-transparent hover:text-primary focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition ease-in-out duration-300 cursor-pointer"
               >
                 Login
               </button>
             </div>
-          </form>
+          </div>
           <div className="mt-4 text-sm text-gray-600 text-center">
             <p>
               Don’t have a Problem?{" "}

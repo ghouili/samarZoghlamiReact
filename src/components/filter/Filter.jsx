@@ -17,19 +17,19 @@ const Filter = ({
     onSearch(e.target.value);
   };
   return (
-    <div className="bg-white shadow border border-gray-100 rounded-md flex flex-row items-center justify-between py-2 px-6">
-      <div className=" flex fle-row items-center gap-4">
+    <div className="bg-white shadow border border-gray-100 rounded-md flex flex-col lg:flex-row gap-6 lg:items-center justify-between py-2 px-6">
+      <div className=" flex flex-col md:flex-row  md:items-center gap-4">
         {location.pathname === "/interventions" ? null : (
           <button
             onClick={toggleUploadFileModal}
-            className="text-xs flex items-center gap-1 font-semibold text-primary border border-primary hover:bg-primary hover:text-white rounded-md px-2 py-1.5 transition ease-in-out duration-300 cursor-pointer"
+            className="text-xs flex items-center justify-center gap-1 font-semibold text-primary border border-primary hover:bg-primary hover:text-white rounded-md px-2 py-1.5 transition ease-in-out duration-300 cursor-pointer"
           >
             <FileUp strokeWidth={1.75} size={16} /> <p>Excel File</p>
           </button>
         )}
         <button
           onClick={toggleModal}
-          className="text-xs flex items-center gap-1 font-semibold text-primary border border-primary hover:bg-primary hover:text-white rounded-md px-2 py-1.5 transition ease-in-out duration-300 cursor-pointer"
+          className="text-xs flex items-center justify-center gap-1 font-semibold text-primary border border-primary hover:bg-primary hover:text-white rounded-md px-2 py-1.5 transition ease-in-out duration-300 cursor-pointer"
         >
           <UserPlus strokeWidth={1.75} size={16} />
           <p>Nouveau {location.pathname.split("/")[1]}</p>
@@ -60,7 +60,7 @@ const Filter = ({
           All
         </button> */}
       </div>
-      <div className="">
+      <div className="flex justify-end ">
         <nav aria-label="Page navigation example">
           <ul className="inline-flex -space-x-px text-sm">
             <li>

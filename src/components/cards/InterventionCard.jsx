@@ -54,6 +54,14 @@ const InterventionCard = ({ data, fetchData }) => {
               {data.project?.code || "-------"}
             </p>
           </div>
+          <div className="flex flex-row gap-1">
+            <p className="text-sm text-gray-700 font-semibold">Status:</p>
+            <p className="text-sm text-gray-700">{data.status}</p>
+          </div>
+          <div className="flex flex-row gap-1">
+            <p className="text-sm text-gray-700 font-semibold">Type:</p>
+            <p className="text-sm text-gray-700">{data.type}</p>
+          </div>
           <div className="flex flex-row gap-1 h-15">
             <p className="text-sm text-gray-700 font-semibold">Description:</p>
             <p className="text-sm text-gray-700 line-clamp-3 max-h-14 ">

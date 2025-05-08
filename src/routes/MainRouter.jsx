@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Dashboard,
   Navbar,
@@ -9,11 +9,15 @@ import {
   Intervention,
   Auth,
 } from "../containers";
-import { Route, Routes, useLocation } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
+import PrivateRoute from "./PrivateRoute ";
+import { AuthContext } from "../contextHook/AuthContext";
 
 const MainRouter = () => {
   const location = useLocation();
+  const { user } = useContext(AuthContext);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,22 +36,71 @@ const MainRouter = () => {
   }, []);
   return (
     <div>
-      {location.pathname === "/login" ? null : <Navbar />}
+      {location.pathname === "/login" ? null : (
+        <Navbar
+          setIsSidebarOpen={setIsSidebarOpen}
+          isSidebarOpen={isSidebarOpen}
+        />
+      )}
       <div
         className={` w-full ${
-          location.pathname === "/login" ? "" : "pl-56 pt-16"
+          location.pathname === "/login" ? "" : " sm:pl-56 pt-16"
         }  ${isScrolled ? "" : ""}`}
       >
-        {location.pathname === "/login" ? null : <Sidebar />}
+        {location.pathname === "/login" ? null : (
+          <Sidebar
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
+        )}
 
         <div className={`${location.pathname === "/login" ? "" : "p-6"}`}>
           <Routes>
-            <Route index element={<Dashboard />} />
-            <Route path="login" element={<Auth />} />
-            <Route path="users" element={<Users />} />
-            <Route path="projects" element={<Projects />} />
-            <Route path="equipements" element={<Equipments />} />
-            <Route path="interventions" element={<Intervention />} />
+            <Route
+              index
+              element={
+                <PrivateRoute role={"admin"}>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="login"
+              element={user ? <Navigate to="/" replace /> : <Auth />}
+            />
+            <Route
+              path="users"
+              element={
+                <PrivateRoute role={"admin"}>
+                  <Users />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="projects"
+              element={
+                <PrivateRoute role={null}>
+                  <Projects />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="equipements"
+              element={
+                <PrivateRoute>
+                  <Equipments />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="interventions"
+              element={
+                <PrivateRoute>
+                  <Intervention />
+                </PrivateRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </div>
       </div>

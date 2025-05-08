@@ -1,17 +1,27 @@
 import { useLocation } from "react-router";
-
 import { BiHomeAlt2 } from "react-icons/bi";
 import { IoIosArrowDown } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
-import { useState } from "react";
-import { Bell, FileSpreadsheet, Mail, PencilRuler, Search } from "lucide-react";
+import { useState, useContext } from "react";
+import {
+  Bell,
+  FileSpreadsheet,
+  Mail,
+  PencilRuler,
+  Menu,
+  EllipsisVertical,
+  LogOut,
+  Logs,
+} from "lucide-react";
 import { BsDiagram3 } from "react-icons/bs";
-// import axios from "axios";
-// import { path } from "../../utils/Variables";
+import { AuthContext } from "../../contextHook/AuthContext";
+import { path } from "../../utils/Variables";
 
-const Navbar = () => {
+const Navbar = ({ setIsSidebarOpen, isSidebarOpen }) => {
   const location = useLocation();
-  const [name, setName] = useState("Ahmed");
+  const { user, logout } = useContext(AuthContext);
+  // const [name, setName] = useState("Ahmed");
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   const iconConfig = {
     color: "#202020",
@@ -42,120 +52,88 @@ const Navbar = () => {
   };
 
   const currentRoute = location.pathname.split("/")[1];
-  //   const currentRoute =
-  //     location.pathname.split("/").length > 2
-  //       ? location.pathname.split("/")[1]
-  //       : location.pathname.split("/");
   const currentLabel = routeLabels[currentRoute] || "Unknown";
-
   const currentIcon = routeIcons[currentRoute] || (
     <BiHomeAlt2 {...iconConfigH} />
   );
 
-  // useEffect(() => {
-  //   const fetchPatientData = async () => {
-  //     const result = await axios.get(
-  //       `${path}patient/${
-  //         location.pathname.split("/")[location.pathname.split("/").length]
-  //       }`
-  //     );
-  //     // console.log(result.data.data.prenom);
-  //     setName(result.data.data.nom + " " + result.data.data.prenom);
-  //   };
-  //   if (
-  //     location.pathname.split("/").length > 2 &&
-  //     location.pathname.split("/")[1] === "patient"
-  //   ) {
-  //     fetchPatientData();
-  //   }
-  // }, [location.pathname]);
-
   return (
-    <div className="h-14 fixed top-4 right-0 left-56 z-50 px-6">
-      <div className="bg-white h-full rounded-md shadow-md flex flex-row items-center justify-between pl-6 pr-4 text-black border border-gray-100 ">
-        <div className=" flex flex-row items-center justify-between w-2/3 ">
+    <div className="h-14 fixed top-4 right-0 left-0 sm:left-56 z-50 px-6">
+      <div className="bg-white h-full rounded-md shadow-md flex flex-row items-center justify-between px-6 text-black border border-gray-100">
+        <div className="flex flex-row items-center text-gray-700">
+          <button
+            className="sm:hidden mr-4"
+            onClick={() => setIsSidebarOpen((prev) => !prev)}
+          >
+            {isSidebarOpen ? <Logs size={24} /> : <Menu size={24} />}
+          </button>
           <div className="flex flex-row gap-2 items-center transition-transform duration-500 ease-in-out transform divide-x-2 divide-blue-[#919191]">
             <div className="flex flex-row items-center gap-4">
               {currentIcon}
-              <span className="text-sm font-medium ">{currentLabel}</span>
+              <span className="text-sm font-medium">{currentLabel}</span>
             </div>
             {location.pathname.split("/").length > 2 &&
             location.pathname.split("/")[1] === "patient" ? (
               <span className="text-sm font-medium pl-2">{name}</span>
             ) : null}
           </div>
-
-          {/* <form className="">
-            <label
-              htmlFor="search"
-              className=" text-sm font-medium text-gray-900 sr-only "
-            >
-              Search
-            </label>
-            <div className="relative ">
-              <div className="absolute inset-y-0 start-0 flex items-center ps-2 pointer-events-none">
-                <svg
-                  className="w-3 h-3 text-gray-500 "
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-              <input
-                type="search"
-                id="search"
-                className="block w-56 p-1.5 ps-7 text-xs text-gray-900 shadow rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500 focus:outline-none d"
-                placeholder="Trouver un patient ou un rapport"
-                required
-              />
-            </div>
-          </form> */}
         </div>
-        <div className=" pl-6 flex flex-row items-center gap-10 ">
-          {/* <label
-            htmlFor="search"
-            className="hidden sm:block border border-gray-300 rounded-md relative pl-8 pr-2 py-1"
-          >
-            <Search
-              size={20}
-              strokeWidth={1.5}
-              className="absolute left-1.5 top-1.5 "
-            />
-            <input
-              id="search"
-              placeholder="Search.."
-              type="search"
-              className="outline-none"
-            />
-          </label> */}
-          <div className="flex flex-row items-center gap-6">
-            <Bell size={20} className="" />
-            <Mail size={20} className="" />
+        <div className="pl-6 flex flex-row items-center gap-10">
+          <div className="hidden lg:flex flex-row items-center gap-6">
+            <Bell size={20} />
+            <Mail size={20} />
           </div>
-          <div className="flex flex-row gap-2 items-center text-xs">
-            {/* <span className="border rounded-full">bull</span> */}
+          <div className="relative flex flex-row gap-2 items-center text-xs">
             <img
-              className="w-8 h-8 rounded-full"
-              src="http://localhost:4000/uploads/images/avatar.png"
-              // src="https://i.pinimg.com/564x/3a/f1/c7/3af1c73dd7fe817a9e02a94562662e78.jpg"
+              className="w-8 h-8 rounded-full hidden sm:block"
+              src={`${path}uploads/images/${user?.picture}`}
               alt="Rounded avatar"
             />
-            <div className="flex flex-col">
-              <span className="font-semibold">{name}</span>
-              <span className="font-medium text-[#33B0C4]">Administrator</span>
+            <div className="sm:flex flex-col hidden ">
+              <span className="font-semibold">{user?.name}</span>
+              <span className="font-medium text-[#33B0C4]">{user?.role}</span>
             </div>
-            <button>
+            <button
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="hidden sm:block"
+            >
               <IoIosArrowDown color="#202020" size={18} />
             </button>
+            <button
+              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              className="sm:hidden block"
+            >
+              <EllipsisVertical color="#202020" size={18} />
+            </button>
+            <div
+              className={`border border-gray-200 absolute right-0 top-full mt-2 w-48 bg-white rounded-md shadow-xl py-2 transition-all duration-300 ease-in-out transform origin-top ${
+                isUserMenuOpen
+                  ? "opacity-100 scale-y-100"
+                  : "opacity-0 scale-y-0 pointer-events-none"
+              }`}
+            >
+              <div className="flex flex-row text-sm items-center gap-2 px-4 py-2 sm:py-0 ">
+                <img
+                  className="w-8 h-8 rounded-full sm:hidden block"
+                  src={`${path}uploads/images/${user?.picture}`}
+                  alt="Rounded avatar"
+                />
+                <div className="flex flex-col sm:hidden ">
+                  <span className="font-semibold">{user?.name}</span>
+                  <span className="font-medium text-[#33B0C4]">
+                    {user?.role}
+                  </span>
+                </div>
+              </div>
+              <div className="border-b border-gray-400 mx-2 sm:hidden block" />
+              <button
+                onClick={logout}
+                className=" px-4 py-2 text-sm hover:bg-gray-100 w-full text-left text-red-800 font-medium flex gap-2"
+              >
+                <LogOut size={18} />
+                Logout
+              </button>
+            </div>
           </div>
         </div>
       </div>

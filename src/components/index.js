@@ -21,3 +21,7 @@ export { default as ProjectModal } from "./modals/ProjectModal";
 export { default as EquipmentModal } from "./modals/EquipmentModal";
 export { default as InterventionDetailsModal } from "./modals/InterventionDetailsModal";
 export { default as InterventionModal } from "./modals/InterventionModal";
+
+// Common
+export { default as NoData } from "./common/NoData";
+

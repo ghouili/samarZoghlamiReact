@@ -7,6 +7,8 @@ import axios from "axios";
 import { path } from "../../utils/Variables";
 
 const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
+  const [projects, setProjects] = useState([]);
+
   const [formValues, setFormValues] = useState({
     firstName: "",
     lastName: "",
@@ -16,19 +18,89 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
     post: "",
     affectation: "",
     dept: "",
-    project: "",
+    projectId: null,
     role: "",
     active: true,
     picture: "",
   });
 
+  const roles = [
+    { label: "Admin", value: "admin" },
+    { label: "User", value: "user" },
+  ];
+  const depts = [
+    { label: "PPE", value: "PPE" },
+    { label: "CPE", value: "CPE" },
+    { label: "Qualite", value: "Qualite" },
+  ];
+  const affects = [
+    { label: "Administration", value: "Administration" },
+    { label: "Indirect", value: "Indirect" },
+  ];
+
+  const posts = [
+    {
+      label: "Superviseur shift test system",
+      value: "Superviseur shift test system",
+    },
+    { label: "Agent Prototype", value: "Agent Prototype" },
+    { label: "Ingénieur Product", value: "Ingénieur Product" },
+    { label: "Ingénieur Product", value: "Ingénieur Product" },
+    { label: "Ingénieur Test", value: "Ingénieur Test" },
+    { label: "Ingénieur Qualité", value: "Ingénieur Qualité" },
+    { label: "Technicien Test", value: "Technicien Test" },
+    { label: "Technicien Qualité", value: "Technicien Qualité" },
+    { label: "Technicien Prototype", value: "Technicien Prototype" },
+    {
+      label: "Technicien process Equipements",
+      value: "Technicien process Equipements",
+    },
+    { label: "Technicien process Test", value: "Technicien process Test" },
+    {
+      label: "Technicien process Qualité",
+      value: "Technicien process Qualité",
+    },
+    {
+      label: "Technicien process Prototype",
+      value: "Technicien process Prototype",
+    },
+    { label: "Technicien process Autres", value: "Technicien process Autres" },
+    {
+      label: "Superviseur shift test system",
+      value: "Superviseur shift test system",
+    },
+  ];
+
   useEffect(() => {
-    
     if (data) {
       console.log(data);
       setFormValues(data);
+      setFormValues({
+        ...formValues,
+        projectId: data.projectId?._id || null,
+      });
     }
   }, [data]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await axios.get(`${path}project`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        const projectOptions = response.data.data.map((project) => ({
+          label: project.code,
+          value: project._id,
+        }));
+        setProjects(projectOptions);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        Swal.fire("Error!", "Failed to load projects", "error");
+      }
+    };
+
+    fetchProjects();
+  }, []);
 
   //image related
   const [File, setFile] = useState();
@@ -83,7 +155,7 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
       post: "",
       affectation: "",
       dept: "",
-      project: "",
+      projectId: null,
       role: "",
       active: true,
       picture: "",
@@ -106,16 +178,19 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
       formData.append("picture", File);
     }
 
-    formData.append('firstName', formValues.firstName);
-    formData.append('lastName', formValues.lastName);
-    formData.append('code', formValues.code);
-    formData.append('email', formValues.email);
-    formData.append('post_hr', formValues.post_hr);
-    formData.append('post', formValues.post);
-    formData.append('affectation', formValues.affectation);
-    formData.append('dept', formValues.dept);
-    formData.append('project', formValues.project);
-    formData.append('role', formValues.role);
+    formData.append("firstName", formValues.firstName);
+    formData.append("lastName", formValues.lastName);
+    formData.append("code", formValues.code);
+    formData.append("email", formValues.email);
+    formData.append("post_hr", formValues.post_hr);
+    formData.append("post", formValues.post);
+    formData.append("affectation", formValues.affectation);
+    formData.append("dept", formValues.dept);
+    if (formValues.projectId) {
+      formData.append("projectId", formValues.projectId);
+    }
+    formData.append("role", formValues.role);
+    // console.log(formValues);
 
     try {
       let url, result;
@@ -128,8 +203,8 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
       }
       console.log(result);
       if (result.data?.success === true) {
-    fetchData();
-    closeModal();
+        fetchData();
+        closeModal();
         Swal("Success!", result.data.message, "success");
       } else {
         return Swal("Error!", result.data.message, "error");
@@ -198,7 +273,7 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
                     formValues={formValues}
                   />
                 </div>
-                <div className="w-full grid grid-cols-3 gap-6 ">
+                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
                   {/* Email ::  */}
                   <InputField
                     type="email"
@@ -239,23 +314,23 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
                   />
 
                   {/* Role :: */}
-                  <InputField
-                    type="text"
+                  <SelectField
                     label="Role"
                     name="role"
-                    placeholder="Role..."
                     value={formValues.role}
                     onChange={handleInputChange}
+                    options={roles}
+                    disabled={false}
                   />
 
                   {/* Post :: */}
-                  <InputField
-                    type="text"
+                  <SelectField
                     label="Post"
                     name="post"
-                    placeholder="Post..."
                     value={formValues.post}
                     onChange={handleInputChange}
+                    options={posts}
+                    disabled={false}
                   />
 
                   {/* Post_hr :: */}
@@ -269,33 +344,42 @@ const UserModal = ({ modalOpen, toggleModal, fetchData, data }) => {
                   />
 
                   {/* Affectation :: */}
-                  <InputField
-                    type="text"
+                  <SelectField
                     label="Affectation"
                     name="affectation"
-                    placeholder="Affectation..."
                     value={formValues.affectation}
                     onChange={handleInputChange}
+                    options={affects}
+                    disabled={false}
                   />
 
                   {/* Departement :: */}
-                  <InputField
-                    type="text"
+
+                  <SelectField
                     label="Departement"
                     name="dept"
-                    placeholder="Departement..."
                     value={formValues.dept}
                     onChange={handleInputChange}
+                    options={depts}
+                    disabled={false}
                   />
 
                   {/* Project :: */}
-                  <InputField
+                  {/* <InputField
                     type="text"
                     label="Project"
                     name="project"
                     placeholder="Project..."
                     value={formValues.project}
                     onChange={handleInputChange}
+                  /> */}
+                  <SelectField
+                    label="Project"
+                    name="projectId"
+                    value={formValues.projectId}
+                    onChange={handleInputChange}
+                    options={projects}
+                    disabled={false}
                   />
                 </div>
               </div>

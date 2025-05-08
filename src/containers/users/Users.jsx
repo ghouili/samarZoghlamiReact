@@ -1,6 +1,12 @@
 import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Filter, UploadFileModel, UserCard, UserModal } from "../../components";
+import {
+  Filter,
+  NoData,
+  UploadFileModel,
+  UserCard,
+  UserModal,
+} from "../../components";
 import axios from "axios";
 import { path } from "../../utils/Variables";
 
@@ -60,11 +66,15 @@ const Users = () => {
           onPageChange={handlePageChange}
           onSearch={handleSearch}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {data.map((item, idx) => (
-            <UserCard key={idx} data={item} fetchData={fetchData} />
-          ))}
-        </div>
+        {data.length != 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {data.map((item, idx) => (
+              <UserCard key={idx} data={item} fetchData={fetchData} />
+            ))}
+          </div>
+        ) : (
+          <NoData />
+        )}
       </div>
       <UserModal
         modalOpen={modalOpen}

@@ -4,6 +4,7 @@ import {
   InterventionCard,
   InterventionDetailsModal,
   InterventionModal,
+  NoData,
   UploadFileModel,
 } from "../../components";
 import { path } from "../../utils/Variables";
@@ -100,15 +101,19 @@ const Intervention = () => {
         onPageChange={handlePageChange}
         onSearch={handleSearch}
       />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {interventions.map((intervention) => (
-          <InterventionCard
-            key={intervention._id}
-            data={intervention}
-            fetchData={fetchData}
-          />
-        ))}
-      </div>
+      {interventions.length != 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {interventions.map((intervention) => (
+            <InterventionCard
+              key={intervention._id}
+              data={intervention}
+              fetchData={fetchData}
+            />
+          ))}
+        </div>
+      ) : (
+        <NoData />
+      )}
       <InterventionModal
         modalOpen={modalOpen}
         toggleModal={toggleModal}

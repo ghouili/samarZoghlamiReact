@@ -24,7 +24,7 @@ const UserCard = ({ data, fetchData }) => {
     code,
     email,
     post,
-    project,
+    projectId,
     role,
     picture,
     active,
@@ -48,11 +48,42 @@ const UserCard = ({ data, fetchData }) => {
       console.log(id);
 
       await axios
-      .delete(`${path}user/one/${data._id}`)
+        .delete(`${path}user/one/${data._id}`)
+        .then((res) => {
+          if (res.data?.success) {
+            Swal.fire({
+              title: "Deleted!",
+              text: res.data?.message,
+              icon: "success",
+            });
+            fetchData();
+          } else {
+            Swal.fire({
+              title: "Error!",
+              text: "somethins with server",
+              icon: "error",
+            });
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "Error!",
+            text: error.message,
+            icon: "error",
+          });
+          // console.log(error);
+        });
+      fetchData();
+    }
+  };
+
+  const ToggleEctiveStatus = async () => {
+    await axios
+      .get(`${path}user/activatestatus/${data._id}`)
       .then((res) => {
         if (res.data?.success) {
           Swal.fire({
-            title: "Deleted!",
+            title: "Satus Updated!",
             text: res.data?.message,
             icon: "success",
           });
@@ -65,42 +96,8 @@ const UserCard = ({ data, fetchData }) => {
           });
         }
       })
-      .catch((error) => {
-        Swal.fire({
-          title: "Error!",
-          text: error.message,
-          icon: "error",
-        });
-        // console.log(error);
-      });
-        fetchData();
-    }
-  };
-
-  
-  const ToggleEctiveStatus = async () => {
-
-    await axios
-      .get(`${path}user/activatestatus/${data._id}`)
-      .then((res) => {
-         if (res.data?.success) {
-              Swal.fire({
-                title: "Satus Updated!",
-                text: res.data?.message,
-                icon: "success",
-              });
-              fetchData();
-            } else {
-              Swal.fire({
-                title: "Error!",
-                text: "somethins with server",
-                icon: "error",
-              });
-            }
-      })
       .catch((error) => console.log(error));
-  }
-
+  };
 
   return (
     <>
@@ -139,22 +136,24 @@ const UserCard = ({ data, fetchData }) => {
             </span>
           </div>
         </div>
-        <div className="text-sm">
-          <div className="flex flex-row items-center justify-between">
+        <div className="text-sm min-h-28">
+          <div className="flex flex-row items-center justify-between gap-4">
             <h2 className="text-gray-800 font-semibold">Code:</h2>
             <span className="text-gray-500">{code}</span>
           </div>
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-between gap-4">
             <h2 className="text-gray-800 font-semibold">Email:</h2>
-            <span className="text-gray-500">{email}</span>
+            <span className="text-gray-500 line-clamp-1">{email}</span>
           </div>
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-between gap-4">
             <h2 className="text-gray-800 font-semibold">Post:</h2>
-            <span className="text-gray-500">{post}</span>
+            <span className="text-gray-500 line-clamp-1">{post}</span>
           </div>
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-between gap-4">
             <h2 className="text-gray-800 font-semibold">Project:</h2>
-            <span className="text-gray-500">{project}</span>
+            <span className="text-gray-500 line-clamp-1">
+              {projectId ? projectId.code : "------"}
+            </span>
           </div>
         </div>
         <div className="border-b border-gray-300"></div>

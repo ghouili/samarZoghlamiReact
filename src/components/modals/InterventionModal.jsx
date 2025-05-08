@@ -74,6 +74,8 @@ const InterventionModal = ({ data, modalOpen, fetchData, toggleModal }) => {
         userId: data.user?._id || "",
         projectId: data.project?._id || "",
         description: data.description || "",
+        type: data.type || "",
+        status: data.status || "",
       });
     } else {
       setFormValues({
@@ -128,7 +130,7 @@ const InterventionModal = ({ data, modalOpen, fetchData, toggleModal }) => {
             <h2 className="text-xl font-semibold mb-4">
               {data ? "Edit Intervention" : "Add New Intervention"}
             </h2>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <SelectField
                 label="User"
                 name="userId"

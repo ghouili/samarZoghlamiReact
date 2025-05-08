@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { path } from "../../utils/Variables";
 import {
   Filter,
+  NoData,
   ProjectCard,
   ProjectModal,
   UploadFileModel,
@@ -59,11 +60,15 @@ const Projects = () => {
           onPageChange={handlePageChange}
           onSearch={handleSearch}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {data.map((item, idx) => (
-            <ProjectCard key={idx} data={item} fetchData={fetchData} />
-          ))}
-        </div>
+        {data.length != 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {data.map((item, idx) => (
+              <ProjectCard key={idx} data={item} fetchData={fetchData} />
+            ))}
+          </div>
+        ) : (
+          <NoData />
+        )}
       </div>
       <ProjectModal
         modalOpen={modalOpen}

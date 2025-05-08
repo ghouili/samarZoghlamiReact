@@ -6,6 +6,7 @@ import {
   EquipmentCard,
   EquipmentModal,
   Filter,
+  NoData,
   UploadFileModel,
 } from "../../components";
 
@@ -59,11 +60,15 @@ const Equipments = () => {
           onPageChange={handlePageChange}
           onSearch={handleSearch}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {data.map((item, idx) => (
-            <EquipmentCard key={idx} data={item} fetchData={fetchData} />
-          ))}
-        </div>
+        {data.length != 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {data.map((item, idx) => (
+              <EquipmentCard key={idx} data={item} fetchData={fetchData} />
+            ))}
+          </div>
+        ) : (
+          <NoData />
+        )}
       </div>
       <EquipmentModal
         modalOpen={modalOpen}

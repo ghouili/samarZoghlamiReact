@@ -9,7 +9,7 @@ const UserCardDetail = ({
   modalOpen,
   toggleModal,
   deleteUser,
-  ToggleEctiveStatus
+  ToggleEctiveStatus,
 }) => {
   const {
     // id,
@@ -121,7 +121,9 @@ const UserCardDetail = ({
                   <div className="w-11/12 border-b border-gray-300 self-center mx-auto my-1" />
                   <div className="flex flex-row items-center justify-between">
                     <h2 className="text-gray-800">Project:</h2>
-                    <span className="text-gray-500">{project}</span>
+                    <span className="text-gray-500">
+                      {project ? project.code : "------"}
+                    </span>
                   </div>
                 </div>
                 {/* <div className="flex mt-4 md:mt-6"> */}
